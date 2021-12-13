@@ -4,6 +4,7 @@ import com.anagrama.calculate.entities.Anagram;
 import com.anagrama.calculate.services.AnagramaService;
 import com.anagrama.calculate.services.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class AnagramaController {
     DictionaryService dictionaryService;
 
     @GetMapping("/{word}")
+    @Cacheable("anagrams")
     public ResponseEntity<?> getAnagramas(@PathVariable String word) throws IOException, InterruptedException {
         int anagramCount = anagramaService.calculateAnagram(word);
         ArrayList<String> anagramsList = anagramaService.getAllAnagrams(word, anagramCount);
